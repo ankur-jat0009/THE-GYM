@@ -7,7 +7,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.svg', 'apple-touch-icon.png', 'pwa-192x192.png', 'pwa-512x512.png', 'offline.html'],
+      includeAssets: ['favicon.svg', 'apple-touch-icon.png', 'pwa-192x192.png', 'pwa-512x512.png'],
       manifest: {
         name: 'THE GYM – Premium Fitness Center',
         short_name: 'THE GYM',
@@ -32,10 +32,8 @@ export default defineConfig({
         ],
       },
       workbox: {
-        // Cache static assets only; NEVER cache sensitive authenticated API responses
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2,jpg,jpeg,webp}'],
-        navigateFallback: '/offline.html',
-        navigateFallbackDenylist: [/^\/api\//, /^\/admin/],
+        // Never hijack navigation with an offline page; always allow live SPA routing
+        navigateFallback: null,
       },
     }),
   ],

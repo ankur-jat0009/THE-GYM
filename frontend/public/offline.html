@@ -1,87 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Offline – THE GYM</title>
-  <style>
-    body {
-      background-color: #0a0d12;
-      color: #f8fafc;
-      font-family: system-ui, -apple-system, sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      margin: 0;
-      padding: 1.5rem;
-      box-sizing: border-box;
-      text-align: center;
+  <meta charset="UTF-8">
+  <meta http-equiv="refresh" content="0;url=/">
+  <title>THE GYM</title>
+  <script>
+    // Permanently unregister any old offline service workers and return to app
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(function(registrations) {
+        for (let registration of registrations) {
+          registration.update();
+        }
+      });
     }
-    .card {
-      background: #121820;
-      border: 1px solid #222f3e;
-      border-radius: 16px;
-      padding: 2.5rem 2rem;
-      max-width: 440px;
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
-    }
-    .badge {
-      display: inline-block;
-      background: rgba(204, 255, 0, 0.15);
-      color: #ccff00;
-      font-weight: 700;
-      padding: 0.25rem 0.75rem;
-      border-radius: 9999px;
-      font-size: 0.85rem;
-      margin-bottom: 1rem;
-    }
-    h1 {
-      margin: 0 0 0.5rem;
-      font-size: 1.75rem;
-      letter-spacing: -0.02em;
-    }
-    p {
-      color: #94a3b8;
-      font-size: 0.95rem;
-      line-height: 1.5;
-      margin-bottom: 1.5rem;
-    }
-    .info {
-      background: #161e28;
-      border-radius: 8px;
-      padding: 1rem;
-      font-size: 0.85rem;
-      color: #cbd5e1;
-      margin-bottom: 1.5rem;
-      text-align: left;
-    }
-    button {
-      background: #ccff00;
-      color: #000;
-      font-weight: 700;
-      border: none;
-      padding: 0.75rem 1.75rem;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 0.95rem;
-      transition: opacity 0.2s;
-    }
-    button:hover {
-      opacity: 0.9;
-    }
-  </style>
+    window.location.replace('/');
+  </script>
 </head>
-<body>
-  <div class="card">
-    <div class="badge">OFFLINE MODE</div>
-    <h1>THE GYM</h1>
-    <p>You appear to be offline right now. Check your internet connection or Wi-Fi to load live gym data.</p>
-    <div class="info">
-      <div><strong>Contact:</strong> +91 99929 63807</div>
-      <div style="margin-top: 0.35rem;"><strong>Location:</strong> Badshahpur, Sector 69, Gurugram</div>
-    </div>
-    <button onclick="window.location.reload()">Retry Connection</button>
-  </div>
+<body style="background:#000; margin:0; display:flex; align-items:center; justify-content:center; height:100vh; color:#fff; font-family:sans-serif;">
+  <p>Connecting to THE GYM...</p>
 </body>
 </html>

@@ -11,6 +11,7 @@ from app.api.deps import get_current_user, get_current_admin
 from app.models.user import User
 from app.models.membership import Membership
 from app.models.attendance import Attendance
+from app.models.notification import Notification
 from app.schemas.attendance import (
     QRTokenResponse,
     AttendanceScanRequest,
