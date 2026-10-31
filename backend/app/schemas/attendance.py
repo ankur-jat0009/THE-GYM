@@ -16,6 +16,10 @@ class AttendanceScanRequest(BaseModel):
     method: str = "QR_SCAN"
 
 
+class MemberCheckinRequest(BaseModel):
+    qr_payload: str  # QR string scanned by member camera from the gym wall/desk QR
+
+
 class AttendanceManualRequest(BaseModel):
     user_id: str
     attendance_date: Optional[date] = None

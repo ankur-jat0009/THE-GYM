@@ -13,11 +13,13 @@ import {
 import { api } from '../../services/api';
 import { formatDate, formatDateTime } from '../../utils/formatters';
 import { QRScannerModal } from '../../components/admin/QRScannerModal';
+import { GymQRModal } from '../../components/admin/GymQRModal';
 
 export const AdminAttendance: React.FC = () => {
   const [history, setHistory] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [scannerOpen, setScannerOpen] = useState(false);
+  const [gymQrOpen, setGymQrOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<string>(new Date().toISOString().split('T')[0]);
 
   // Manual check-in search
@@ -105,13 +107,23 @@ export const AdminAttendance: React.FC = () => {
           </p>
         </div>
 
-        <button
-          onClick={() => setScannerOpen(true)}
-          className="px-5 py-2.5 rounded-xl bg-gym-lime text-black font-heading font-black text-xs uppercase tracking-wider shadow-glow-lime hover:bg-gym-limeHover flex items-center gap-2 self-start sm:self-auto hover:scale-105 transition-all"
-        >
-          <Camera className="w-4 h-4 stroke-[2.5]" />
-          <span>Launch Camera QR Scanner</span>
-        </button>
+        <div className="flex flex-wrap items-center gap-3 self-start sm:self-auto">
+          <button
+            onClick={() => setGymQrOpen(true)}
+            className="px-5 py-2.5 rounded-xl bg-gym-card text-white hover:text-gym-lime border border-gym-border hover:border-gym-lime font-heading font-black text-xs uppercase tracking-wider flex items-center gap-2 hover:scale-105 transition-all shadow-md"
+          >
+            <QrCode className="w-4 h-4 text-gym-lime" />
+            <span>Display / Print Gym QR</span>
+          </button>
+
+          <button
+            onClick={() => setScannerOpen(true)}
+            className="px-5 py-2.5 rounded-xl bg-gym-lime text-black font-heading font-black text-xs uppercase tracking-wider shadow-glow-lime hover:bg-gym-limeHover flex items-center gap-2 hover:scale-105 transition-all"
+          >
+            <Camera className="w-4 h-4 stroke-[2.5]" />
+            <span>Staff Camera Scanner</span>
+          </button>
+        </div>
       </div>
 
       {/* Manual Check-in & Search Card */}
@@ -249,6 +261,13 @@ export const AdminAttendance: React.FC = () => {
             fetchHistory();
             fetchMonthlySummary();
           }}
+        />
+      )}
+
+      {/* Official Gym Desk QR Modal Component */}
+      {gymQrOpen && (
+        <GymQRModal
+          onClose={() => setGymQrOpen(false)}
         />
       )}
     </div>

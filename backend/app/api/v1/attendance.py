@@ -16,9 +16,123 @@ from app.schemas.attendance import (
     AttendanceScanRequest,
     AttendanceManualRequest,
     AttendanceResponse,
+    MemberCheckinRequest,
 )
 
 router = APIRouter(prefix="/attendance", tags=["Attendance & QR"])
+
+
+@router.get("/gym-qr")
+def get_gym_official_qr():
+    """
+    Returns the official gym check-in QR code payload.
+    Displayed on the front desk or printed on the gym entrance wall for members to scan.
+    """
+    qr_data = {
+        "gym": "THE GYM",
+        "branch": "Badshahpur, Sector 69, Gurugram",
+        "action": "ATTENDANCE_CHECKIN",
+        "code": "THE_GYM_OFFICIAL_CHECKIN_2026",
+        "location": "Neelkanth Enclave, Plot No. 9, Gali No. 1, Near Ekta Hospital, Badshahpur, Sector 69, Gurugram",
+    }
+    return {
+        "qr_payload": json.dumps(qr_data),
+        "code": "THE_GYM_OFFICIAL_CHECKIN_2026",
+        "gym_name": "THE GYM",
+        "location": "Neelkanth Enclave, Plot No. 9, Gali No. 1, Near Ekta Hospital, Badshahpur, Sector 69, Gurugram",
+    }
+
+
+@router.post("/member-checkin")
+def member_self_checkin(
+    checkin_req: MemberCheckinRequest,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """
+    Allows an authenticated member to scan the gym counter QR code and mark their attendance.
+    """
+    raw_payload = checkin_req.qr_payload.strip()
+
+    is_valid = False
+    if "THE_GYM" in raw_payload or "thegym" in raw_payload.lower():
+        is_valid = True
+    else:
+        try:
+            parsed = json.loads(raw_payload)
+            if parsed.get("action") == "ATTENDANCE_CHECKIN" or parsed.get("gym") == "THE GYM" or "THE_GYM" in str(parsed):
+                is_valid = True
+        except Exception:
+            pass
+
+    if not is_valid:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid QR Code. Please point your camera at THE GYM Official Check-In QR code displayed at the gym counter.",
+        )
+
+    if not current_user.is_active:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Your gym membership account is inactive. Please contact the front desk.",
+        )
+
+    today = date.today()
+    existing = (
+        db.query(Attendance)
+        .filter(Attendance.user_id == current_user.id, Attendance.attendance_date == today)
+        .first()
+    )
+
+    if existing:
+        checkin_time_str = existing.check_in_time.strftime("%I:%M %p")
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=f"Already Checked In! You have already marked attendance today at {checkin_time_str}. Have a great workout!",
+        )
+
+    # Check active membership status for informative notice
+    membership = (
+        db.query(Membership)
+        .filter(Membership.user_id == current_user.id)
+        .order_by(desc(Membership.created_at))
+        .first()
+    )
+    membership_warning = None
+    if not membership:
+        membership_warning = "Note: No active membership plan found. Please see front desk."
+    elif membership.end_date < today:
+        membership_warning = f"Note: Membership expired on {membership.end_date.strftime('%d %b %Y')}. Please renew at the counter."
+
+    # Record attendance
+    new_attendance = Attendance(
+        user_id=current_user.id,
+        attendance_date=today,
+        marked_by_id=None,
+        method="QR_SCAN",
+        notes="Scanned official gym counter QR code",
+    )
+    db.add(new_attendance)
+
+    # Create notification for member
+    time_str = datetime.now().strftime("%I:%M %p")
+    notif = Notification(
+        user_id=current_user.id,
+        title="Attendance Marked! 💪",
+        message=f"Welcome to THE GYM! Your workout check-in for today at {time_str} is confirmed.",
+        type="ATTENDANCE",
+    )
+    db.add(notif)
+    db.commit()
+    db.refresh(new_attendance)
+
+    return {
+        "success": True,
+        "message": f"Attendance marked successfully! Welcome to THE GYM, {current_user.full_name}!",
+        "check_in_time": time_str,
+        "date": today.isoformat(),
+        "membership_warning": membership_warning,
+    }
 
 
 @router.get("/qr", response_model=QRTokenResponse)

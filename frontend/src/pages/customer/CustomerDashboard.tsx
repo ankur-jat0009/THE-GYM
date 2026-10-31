@@ -13,6 +13,7 @@ import {
   ShieldAlert,
   Bell,
   Info,
+  Camera,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { api } from '../../services/api';
@@ -25,6 +26,7 @@ import {
 } from '../../types';
 import { formatCurrency, formatDate, formatDateTime } from '../../utils/formatters';
 import { AnimatedKpiCard } from '../../components/common/AnimatedKpiCard';
+import { MemberScannerModal } from '../../components/customer/MemberScannerModal';
 
 export const CustomerDashboard: React.FC = () => {
   const { user } = useAuth();
@@ -34,29 +36,31 @@ export const CustomerDashboard: React.FC = () => {
   const [workoutData, setWorkoutData] = useState<CustomerAssignedWorkout | null>(null);
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [scannerOpen, setScannerOpen] = useState(false);
+
+  const fetchDashboard = async () => {
+    try {
+      setLoading(true);
+      const [mRes, fRes, aRes, wRes, nRes] = await Promise.all([
+        api.get<CustomerMembershipOverview>('/users/me/membership'),
+        api.get<CustomerFeeOverview>('/users/me/payments'),
+        api.get<CustomerAttendanceOverview>('/users/me/attendance'),
+        api.get<CustomerAssignedWorkout>('/users/me/workouts'),
+        api.get<{ unread_count: number; items: NotificationItem[] }>('/notifications'),
+      ]);
+      setMembershipData(mRes);
+      setFeeData(fRes);
+      setAttendanceData(aRes);
+      setWorkoutData(wRes);
+      setNotifications(nRes.items || []);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchDashboard = async () => {
-      try {
-        setLoading(true);
-        const [mRes, fRes, aRes, wRes, nRes] = await Promise.all([
-          api.get<CustomerMembershipOverview>('/users/me/membership'),
-          api.get<CustomerFeeOverview>('/users/me/payments'),
-          api.get<CustomerAttendanceOverview>('/users/me/attendance'),
-          api.get<CustomerAssignedWorkout>('/users/me/workouts'),
-          api.get<{ unread_count: number; items: NotificationItem[] }>('/notifications'),
-        ]);
-        setMembershipData(mRes);
-        setFeeData(fRes);
-        setAttendanceData(aRes);
-        setWorkoutData(wRes);
-        setNotifications(nRes.items || []);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchDashboard();
   }, []);
 
@@ -113,13 +117,13 @@ export const CustomerDashboard: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-3">
-            <Link
-              to="/dashboard/attendance"
+            <button
+              onClick={() => setScannerOpen(true)}
               className="px-6 py-3 rounded-xl bg-gym-lime text-black font-heading font-black text-xs uppercase tracking-wider flex items-center gap-2 shadow-glow-lime hover:bg-gym-limeHover transition-all hover:scale-105"
             >
-              <QrCode className="w-4 h-4" />
-              <span>Show QR Pass</span>
-            </Link>
+              <Camera className="w-4 h-4 stroke-[2.5]" />
+              <span>Scan Gym QR</span>
+            </button>
           </div>
         </div>
       </div>
@@ -360,6 +364,16 @@ export const CustomerDashboard: React.FC = () => {
           </div>
         )}
       </div>
+
+      {/* Member Camera QR Scanner Modal */}
+      {scannerOpen && (
+        <MemberScannerModal
+          onClose={() => setScannerOpen(false)}
+          onSuccessCheckin={() => {
+            fetchDashboard();
+          }}
+        />
+      )}
 
     </div>
   );

@@ -18,10 +18,12 @@ import { AdminDashboardSummary } from '../../types';
 import { api } from '../../services/api';
 import { formatCurrency, formatDate, formatDateTime } from '../../utils/formatters';
 import { AnimatedKpiCard } from '../../components/common/AnimatedKpiCard';
+import { GymQRModal } from '../../components/admin/GymQRModal';
 
 export const AdminDashboard: React.FC = () => {
   const [data, setData] = useState<AdminDashboardSummary | null>(null);
   const [loading, setLoading] = useState(true);
+  const [gymQrOpen, setGymQrOpen] = useState(false);
 
   const fetchDashboard = async () => {
     try {
@@ -65,10 +67,17 @@ export const AdminDashboard: React.FC = () => {
             Real-time gym performance, active subscriptions, and daily door metrics.
           </p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2.5">
+          <button
+            onClick={() => setGymQrOpen(true)}
+            className="px-4 py-2 rounded-xl bg-gym-card text-white hover:text-gym-lime border border-gym-border hover:border-gym-lime font-bold text-xs uppercase tracking-wider flex items-center gap-1.5 shadow-sm transition-all"
+          >
+            <QrCode className="w-4 h-4 text-gym-lime" />
+            <span>Display / Print Gym QR</span>
+          </button>
           <Link
             to="/admin/attendance"
-            className="px-4 py-2 rounded-xl bg-gym-lime text-black font-bold text-xs uppercase tracking-wider shadow-glow-lime-sm flex items-center gap-1.5"
+            className="px-4 py-2 rounded-xl bg-gym-lime text-black font-bold text-xs uppercase tracking-wider shadow-glow-lime-sm flex items-center gap-1.5 hover:bg-gym-limeHover transition-all"
           >
             <QrCode className="w-4 h-4" />
             <span>Attendance Desk</span>
@@ -271,6 +280,13 @@ export const AdminDashboard: React.FC = () => {
         </div>
 
       </div>
+
+      {/* Gym Official Desk QR Modal */}
+      {gymQrOpen && (
+        <GymQRModal
+          onClose={() => setGymQrOpen(false)}
+        />
+      )}
 
     </div>
   );

@@ -1,38 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import { QRCodeSVG } from 'qrcode.react';
 import {
-  QrCode,
+  Camera,
   Flame,
   CheckCircle2,
   Calendar,
-  RefreshCw,
-  ShieldAlert,
+  Sparkles,
   Info,
+  Clock,
+  Dumbbell,
+  ShieldCheck,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { api } from '../../services/api';
-import { CustomerAttendanceOverview, QRTokenResponse } from '../../types';
+import { CustomerAttendanceOverview } from '../../types';
 import { formatDateTime } from '../../utils/formatters';
 import { AnimatedKpiCard } from '../../components/common/AnimatedKpiCard';
+import { MemberScannerModal } from '../../components/customer/MemberScannerModal';
 
 export const CustomerAttendance: React.FC = () => {
   const { user } = useAuth();
-  const [qrToken, setQrToken] = useState<QRTokenResponse | null>(null);
   const [attendance, setAttendance] = useState<CustomerAttendanceOverview | null>(null);
   const [loading, setLoading] = useState(true);
-  const [qrLoading, setQrLoading] = useState(false);
-
-  const fetchQR = async () => {
-    try {
-      setQrLoading(true);
-      const res = await api.get<QRTokenResponse>('/attendance/qr');
-      setQrToken(res);
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setQrLoading(false);
-    }
-  };
+  const [scannerOpen, setScannerOpen] = useState(false);
 
   const fetchAttendance = async () => {
     try {
@@ -47,32 +36,44 @@ export const CustomerAttendance: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchQR();
     fetchAttendance();
   }, []);
+
+  const todayStr = new Date().toISOString().split('T')[0];
+  const todayLog = attendance?.recent_logs?.find((l) => l.attendance_date === todayStr);
 
   return (
     <div className="space-y-8">
       
       {/* Top Header */}
-      <div>
-        <h1 className="font-heading font-black text-2xl sm:text-3xl text-white uppercase tracking-tight">
-          MY ATTENDANCE & QR PASS
-        </h1>
-        <p className="text-xs sm:text-sm text-slate-400 mt-1">
-          Scan your personal digital pass at the front counter every time you train.
-        </p>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="font-heading font-black text-2xl sm:text-3xl text-white uppercase tracking-tight">
+            MY WORKOUT ATTENDANCE
+          </h1>
+          <p className="text-xs sm:text-sm text-slate-400 mt-1">
+            Scan THE GYM QR code at the entrance or reception desk to check in.
+          </p>
+        </div>
+
+        <button
+          onClick={() => setScannerOpen(true)}
+          className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gym-lime hover:bg-gym-limeHover text-black font-heading font-black text-xs uppercase tracking-wider shadow-glow-lime hover:scale-105 transition-all"
+        >
+          <Camera className="w-4 h-4 stroke-[2.5]" />
+          <span>Open Camera & Scan Gym QR</span>
+        </button>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         
-        {/* Left Column: QR Pass Card */}
-        <div className="lg:col-span-5 rounded-2xl bg-gym-card border border-gym-border p-6 sm:p-8 flex flex-col items-center text-center shadow-2xl relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-gym-lime/10 rounded-full blur-2xl pointer-events-none" />
+        {/* Left Column: Interactive Check-in Action Station */}
+        <div className="lg:col-span-5 rounded-3xl bg-gym-card border border-gym-border p-6 sm:p-8 flex flex-col items-center text-center shadow-2xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-40 h-40 bg-gym-lime/10 rounded-full blur-3xl pointer-events-none" />
 
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gym-surface text-gym-lime border border-gym-lime/30 text-xs font-bold mb-4">
-            <QrCode className="w-3.5 h-3.5" />
-            Official Member Pass
+            <Sparkles className="w-3.5 h-3.5" />
+            Daily Entrance Check-In
           </div>
 
           <h2 className="font-heading font-black text-2xl text-white">
@@ -82,41 +83,58 @@ export const CustomerAttendance: React.FC = () => {
             ID: {user?.phone}
           </p>
 
-          {/* QR Code Graphic Frame */}
-          <div className="p-4 rounded-2xl bg-white shadow-glow-lime-sm mb-6 relative">
-            {qrLoading ? (
-              <div className="w-56 h-56 flex items-center justify-center">
-                <RefreshCw className="w-8 h-8 text-black animate-spin" />
+          {/* Today Check-in Status Card */}
+          {todayLog ? (
+            <div className="w-full p-6 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-center space-y-3 mb-6 shadow-inner">
+              <div className="w-14 h-14 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto border border-emerald-500/40">
+                <CheckCircle2 className="w-8 h-8" />
               </div>
-            ) : qrToken ? (
-              <QRCodeSVG
-                value={qrToken.token_payload}
-                size={224}
-                level="H"
-                includeMargin={false}
-              />
-            ) : (
-              <div className="w-56 h-56 flex items-center justify-center text-xs text-black">
-                Failed to load QR code.
+              <div>
+                <span className="text-xs uppercase font-extrabold tracking-wider text-emerald-400">
+                  Checked In For Today
+                </span>
+                <p className="text-lg font-heading font-black text-white mt-1">
+                  Ready to Train! 💪
+                </p>
+                <div className="mt-2 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/40 border border-emerald-500/30 text-xs text-slate-200">
+                  <Clock className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>Checked in at {formatDateTime(todayLog.check_in_time).split(',')[1]}</span>
+                </div>
               </div>
-            )}
-          </div>
+            </div>
+          ) : (
+            <div className="w-full p-6 rounded-2xl bg-neutral-950/70 border border-gym-border text-center space-y-4 mb-6 shadow-xl">
+              <div className="w-16 h-16 rounded-2xl bg-gym-lime/10 text-gym-lime flex items-center justify-center mx-auto border border-gym-lime/30 shadow-glow-lime-sm animate-pulse">
+                <Camera className="w-8 h-8" />
+              </div>
+              <div>
+                <h3 className="font-heading font-black text-lg text-white">
+                  Not Checked In Today
+                </h3>
+                <p className="text-xs text-slate-400 mt-1">
+                  Point your phone camera at THE GYM QR code on the reception desk or entrance wall.
+                </p>
+              </div>
 
-          <button
-            onClick={fetchQR}
-            disabled={qrLoading}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gym-surface hover:bg-gym-card text-slate-300 hover:text-white border border-gym-border text-xs font-bold transition-all mb-6"
-          >
-            <RefreshCw className={`w-3.5 h-3.5 text-gym-lime ${qrLoading ? 'animate-spin' : ''}`} />
-            <span>Refresh QR Security Signature</span>
-          </button>
+              <button
+                onClick={() => setScannerOpen(true)}
+                className="w-full py-3.5 px-5 rounded-xl bg-gym-lime hover:bg-gym-limeHover text-black font-heading font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2.5 shadow-glow-lime transition-all hover:scale-[1.02]"
+              >
+                <Camera className="w-4 h-4 stroke-[2.5]" />
+                <span>Open Camera to Scan Gym QR</span>
+              </button>
+            </div>
+          )}
 
-          {/* Important Security Rule */}
-          <div className="w-full p-3.5 rounded-xl bg-gym-surface border border-gym-border/60 text-left flex items-start gap-2.5">
+          {/* How to Check In Guide */}
+          <div className="w-full p-4 rounded-xl bg-gym-surface border border-gym-border/60 text-left flex items-start gap-3">
             <Info className="w-4 h-4 text-gym-lime shrink-0 mt-0.5" />
-            <p className="text-[11px] text-slate-400 leading-relaxed">
-              <strong>Notice:</strong> Please display this QR code to the gym staff at entry. Only authorized staff devices can mark your attendance. Self-checkins are restricted.
-            </p>
+            <div className="text-[11px] text-slate-400 leading-relaxed space-y-1">
+              <p className="font-bold text-slate-200">How to mark your attendance:</p>
+              <p>1. Open this page upon arriving at THE GYM.</p>
+              <p>2. Tap "Open Camera to Scan Gym QR".</p>
+              <p>3. Scan the official QR poster at the counter to record your workout.</p>
+            </div>
           </div>
         </div>
 
@@ -236,6 +254,16 @@ export const CustomerAttendance: React.FC = () => {
         </div>
 
       </div>
+
+      {/* Member Camera Scanner Modal */}
+      {scannerOpen && (
+        <MemberScannerModal
+          onClose={() => setScannerOpen(false)}
+          onSuccessCheckin={() => {
+            fetchAttendance();
+          }}
+        />
+      )}
 
     </div>
   );
