@@ -38,7 +38,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Mount API routers
+# Mount API routers under /api/v1 (Canonical)
 app.include_router(auth_router, prefix=settings.API_V1_STR)
 app.include_router(users_router, prefix=settings.API_V1_STR)
 app.include_router(memberships_router, prefix=settings.API_V1_STR)
@@ -47,6 +47,16 @@ app.include_router(payments_router, prefix=settings.API_V1_STR)
 app.include_router(workouts_router, prefix=settings.API_V1_STR)
 app.include_router(notifications_router, prefix=settings.API_V1_STR)
 app.include_router(dashboard_router, prefix=settings.API_V1_STR)
+
+# Fallback root mounts so calls to /auth/login or /auth/register work seamlessly
+app.include_router(auth_router)
+app.include_router(users_router)
+app.include_router(memberships_router)
+app.include_router(attendance_router)
+app.include_router(payments_router)
+app.include_router(workouts_router)
+app.include_router(notifications_router)
+app.include_router(dashboard_router)
 
 
 @app.get("/")

@@ -1,9 +1,20 @@
-const rawBase =
-  (import.meta as any).env?.VITE_API_BASE_URL ||
-  (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-    ? '/api/v1'
-    : 'https://the-gym-pc5f.onrender.com/api/v1');
-const BASE_URL = rawBase.replace(/\/+$/, '');
+let envBase = ((import.meta as any).env?.VITE_API_BASE_URL || '').trim();
+if (!envBase) {
+  envBase =
+    typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+      ? '/api/v1'
+      : 'https://the-gym-pc5f.onrender.com/api/v1';
+}
+
+// Strip trailing slashes
+envBase = envBase.replace(/\/+$/, '');
+
+// If user or host provided domain without /api/v1, automatically append /api/v1
+if (envBase.startsWith('http') && !envBase.endsWith('/api/v1') && !envBase.endsWith('/api')) {
+  envBase = `${envBase}/api/v1`;
+}
+
+const BASE_URL = envBase;
 
 export class ApiError extends Error {
   status: number;
