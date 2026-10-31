@@ -27,6 +27,7 @@ import {
 import { formatCurrency, formatDate, formatDateTime } from '../../utils/formatters';
 import { AnimatedKpiCard } from '../../components/common/AnimatedKpiCard';
 import { MemberScannerModal } from '../../components/customer/MemberScannerModal';
+import { PwaInstallButton } from '../../components/common/PwaInstallButton';
 
 export const CustomerDashboard: React.FC = () => {
   const { user } = useAuth();
@@ -116,10 +117,11 @@ export const CustomerDashboard: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
+            <PwaInstallButton label="Download App" />
             <button
               onClick={() => setScannerOpen(true)}
-              className="px-6 py-3 rounded-xl bg-gym-lime text-black font-heading font-black text-xs uppercase tracking-wider flex items-center gap-2 shadow-glow-lime hover:bg-gym-limeHover transition-all hover:scale-105"
+              className="px-6 py-2.5 rounded-xl bg-gym-lime text-black font-heading font-black text-xs uppercase tracking-wider flex items-center gap-2 shadow-glow-lime hover:bg-gym-limeHover transition-all hover:scale-105"
             >
               <Camera className="w-4 h-4 stroke-[2.5]" />
               <span>Scan Gym QR</span>

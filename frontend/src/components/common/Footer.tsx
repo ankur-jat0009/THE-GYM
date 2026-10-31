@@ -41,9 +41,19 @@ export const Footer: React.FC = () => {
                 <span className="w-2 h-2 rounded-full bg-gym-lime animate-pulse" />
                 <span className="font-medium">Badshahpur, Sector 69 • Gurugram</span>
               </div>
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-neutral-900/50 border border-neutral-800/80 text-xs text-slate-400 w-fit">
-                <Clock className="w-3.5 h-3.5 text-gym-lime shrink-0" />
-                <span>Mon – Sat: 5:30 AM – 10:00 PM</span>
+              <div className="flex flex-col gap-1.5 pt-0.5">
+                <div className="inline-flex items-center gap-2 text-xs text-slate-300">
+                  <Clock className="w-3.5 h-3.5 text-gym-lime shrink-0" />
+                  <span className="font-semibold text-white">Mon – Sat Gym Timings:</span>
+                </div>
+                <div className="flex flex-wrap items-center gap-2 text-[11px] text-slate-300 pl-5">
+                  <span className="px-2.5 py-1 rounded-md bg-neutral-900 border border-neutral-800">
+                    Morning: <strong className="text-gym-lime">5:00 AM – 10:00 AM</strong>
+                  </span>
+                  <span className="px-2.5 py-1 rounded-md bg-neutral-900 border border-neutral-800">
+                    Evening: <strong className="text-gym-lime">5:00 PM – 10:00 PM</strong>
+                  </span>
+                </div>
               </div>
             </div>
           </div>

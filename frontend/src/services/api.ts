@@ -1,4 +1,8 @@
-const rawBase = (import.meta as any).env?.VITE_API_BASE_URL || '/api/v1';
+const rawBase =
+  (import.meta as any).env?.VITE_API_BASE_URL ||
+  (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    ? '/api/v1'
+    : 'https://the-gym-pc5f.onrender.com/api/v1');
 const BASE_URL = rawBase.replace(/\/+$/, '');
 
 export class ApiError extends Error {

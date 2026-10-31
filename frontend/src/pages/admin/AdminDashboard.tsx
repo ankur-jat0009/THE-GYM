@@ -19,6 +19,7 @@ import { api } from '../../services/api';
 import { formatCurrency, formatDate, formatDateTime } from '../../utils/formatters';
 import { AnimatedKpiCard } from '../../components/common/AnimatedKpiCard';
 import { GymQRModal } from '../../components/admin/GymQRModal';
+import { PwaInstallButton } from '../../components/common/PwaInstallButton';
 
 export const AdminDashboard: React.FC = () => {
   const [data, setData] = useState<AdminDashboardSummary | null>(null);
@@ -68,6 +69,7 @@ export const AdminDashboard: React.FC = () => {
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2.5">
+          <PwaInstallButton label="Download App" />
           <button
             onClick={() => setGymQrOpen(true)}
             className="px-4 py-2 rounded-xl bg-gym-card text-white hover:text-gym-lime border border-gym-border hover:border-gym-lime font-bold text-xs uppercase tracking-wider flex items-center gap-1.5 shadow-sm transition-all"

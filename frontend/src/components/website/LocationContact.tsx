@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin, Phone, Navigation, PhoneCall, Star } from 'lucide-react';
+import { MapPin, Phone, Navigation, PhoneCall, Star, Clock } from 'lucide-react';
 
 export const LocationContact: React.FC = () => {
   const address = "Neelkanth Enclave, Plot No. 9, Gali No. 1, Near Ekta Hospital, Badshahpur, Sector 69, Gurugram, Haryana – 122101";
@@ -64,6 +64,19 @@ export const LocationContact: React.FC = () => {
 
                 <div className="flex items-start gap-3.5">
                   <div className="w-9 h-9 rounded-lg bg-gym-surface flex items-center justify-center text-gym-lime shrink-0 mt-0.5 border border-gym-border">
+                    <Clock className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h5 className="font-bold text-white text-xs uppercase tracking-wider text-slate-400">Gym Operating Hours</h5>
+                    <p className="text-slate-200 font-semibold mt-1 text-xs">
+                      Mon – Sat: <span className="text-gym-lime">Morning 5:00 AM – 10:00 AM</span> & <span className="text-gym-lime">Evening 5:00 PM – 10:00 PM</span>
+                    </p>
+                    <span className="text-[11px] text-slate-400 block mt-0.5">Sunday Rest Day</span>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3.5">
+                  <div className="w-9 h-9 rounded-lg bg-gym-surface flex items-center justify-center text-gym-lime shrink-0 mt-0.5 border border-gym-border">
                     <Star className="w-5 h-5 fill-gym-lime" />
                   </div>
                   <div>
@@ -103,7 +116,7 @@ export const LocationContact: React.FC = () => {
           <div className="lg:col-span-7 rounded-2xl bg-gym-card border border-gym-border overflow-hidden shadow-xl min-h-[380px] relative">
             <iframe
               title="THE GYM Location Google Map"
-              src={`https://maps.google.com/maps?q=92XV%2B7R%20Gurugram&t=&z=15&ie=UTF8&iwloc=&output=embed`}
+              src={`https://maps.google.com/maps?q=${encodeURIComponent("THE GYM Near Ekta Hospital Badshahpur Sector 69 Gurugram")}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
               width="100%"
               height="100%"
               style={{ border: 0, minHeight: '380px' }}
