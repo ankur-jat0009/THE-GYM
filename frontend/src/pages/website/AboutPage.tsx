@@ -1,8 +1,9 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { Navbar } from '../../components/common/Navbar';
 import { Footer } from '../../components/common/Footer';
 import { AboutSection } from '../../components/website/AboutSection';
-import { Dumbbell, MapPin, Phone, Star, ShieldCheck, HeartHandshake, CheckCircle2 } from 'lucide-react';
+import { Dumbbell, MapPin, Phone, Star, ShieldCheck, HeartHandshake, CheckCircle2, Sparkles, Building2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export const AboutPage: React.FC = () => {
@@ -120,34 +121,81 @@ export const AboutPage: React.FC = () => {
         <section className="py-16 bg-gym-bg">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="p-6 rounded-2xl bg-gym-card border border-gym-border">
-                <div className="flex items-center gap-2 text-yellow-400 mb-3">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-yellow-400" />
-                  ))}
-                  <span className="text-white font-extrabold text-sm ml-1">5.0 / 5.0</span>
+              
+              {/* Badge 1: Verified Google Rating (Amber & Golden Glow) */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                whileHover={{ y: -6, scale: 1.02 }}
+                transition={{ duration: 0.3 }}
+                className="p-7 rounded-3xl bg-gradient-to-br from-amber-950/40 via-gym-card to-neutral-950 border border-amber-500/40 hover:border-yellow-400 shadow-xl hover:shadow-[0_0_25px_rgba(245,158,11,0.25)] transition-all flex flex-col justify-between group relative overflow-hidden"
+              >
+                <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl pointer-events-none group-hover:bg-amber-500/20 transition-colors" />
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-1.5 p-1.5 rounded-xl bg-black/60 border border-yellow-500/30">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                      ))}
+                    </div>
+                    <span className="text-xs font-black text-white px-2.5 py-1 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-300">
+                      5.0 / 5.0
+                    </span>
+                  </div>
+                  <h3 className="font-heading font-black text-xl text-white mb-2">Verified Google Rating</h3>
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    Consistently rated 5.0 stars with 9 reviews from verified active lifters in Badshahpur.
+                  </p>
                 </div>
-                <h3 className="font-heading font-black text-lg text-white mb-2">Verified Google Rating</h3>
-                <p className="text-xs text-slate-400 leading-relaxed">
-                  Consistently rated 5.0 stars with 9 reviews from verified active lifters in Badshahpur.
-                </p>
-              </div>
+              </motion.div>
 
-              <div className="p-6 rounded-2xl bg-gym-card border border-gym-border">
-                <MapPin className="w-6 h-6 text-gym-lime mb-3" />
-                <h3 className="font-heading font-black text-lg text-white mb-2">Gurugram Location</h3>
-                <p className="text-xs text-slate-400 leading-relaxed">
-                  Plot No. 9, Gali No. 1, Near Ekta Hospital, Badshahpur, Sector 69, Gurugram, Haryana – 122101.
-                </p>
-              </div>
+              {/* Badge 2: Gurugram Location (Emerald & Electric Lime) */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                whileHover={{ y: -6, scale: 1.02 }}
+                transition={{ duration: 0.3, delay: 0.1 }}
+                className="p-7 rounded-3xl bg-gradient-to-br from-emerald-950/40 via-gym-card to-neutral-950 border border-emerald-500/40 hover:border-gym-lime shadow-xl hover:shadow-[0_0_25px_rgba(204,255,0,0.25)] transition-all flex flex-col justify-between group relative overflow-hidden"
+              >
+                <div className="absolute top-0 right-0 w-32 h-32 bg-gym-lime/10 rounded-full blur-2xl pointer-events-none group-hover:bg-gym-lime/20 transition-colors" />
+                <div>
+                  <div className="w-12 h-12 rounded-2xl bg-gym-lime/15 text-gym-lime flex items-center justify-center shrink-0 border border-gym-lime/40 mb-4 shadow-glow-lime-sm group-hover:scale-110 transition-transform">
+                    <MapPin className="w-6 h-6" />
+                  </div>
+                  <h3 className="font-heading font-black text-xl text-white mb-2">Gurugram Location</h3>
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    Plot No. 9, Gali No. 1, Near Ekta Hospital, Badshahpur, Sector 69, Gurugram, Haryana – 122101.
+                  </p>
+                </div>
+              </motion.div>
 
-              <div className="p-6 rounded-2xl bg-gym-card border border-gym-border">
-                <Phone className="w-6 h-6 text-gym-lime mb-3" />
-                <h3 className="font-heading font-black text-lg text-white mb-2">Direct Front Desk</h3>
-                <p className="text-xs text-slate-400 leading-relaxed">
-                  Call or visit us directly at <span className="text-white font-bold">+91 99929 63807</span> for member enrollments and consultations.
-                </p>
-              </div>
+              {/* Badge 3: Direct Front Desk (Electric Cyan) */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                whileHover={{ y: -6, scale: 1.02 }}
+                transition={{ duration: 0.3, delay: 0.2 }}
+                className="p-7 rounded-3xl bg-gradient-to-br from-cyan-950/40 via-gym-card to-neutral-950 border border-cyan-500/40 hover:border-cyan-400 shadow-xl hover:shadow-[0_0_25px_rgba(6,182,212,0.25)] transition-all flex flex-col justify-between group relative overflow-hidden"
+              >
+                <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 rounded-full blur-2xl pointer-events-none group-hover:bg-cyan-500/20 transition-colors" />
+                <div>
+                  <div className="w-12 h-12 rounded-2xl bg-cyan-500/15 text-cyan-400 flex items-center justify-center shrink-0 border border-cyan-500/40 mb-4 shadow-[0_0_15px_rgba(6,182,212,0.3)] group-hover:scale-110 transition-transform">
+                    <Phone className="w-6 h-6" />
+                  </div>
+                  <h3 className="font-heading font-black text-xl text-white mb-2">Direct Front Desk</h3>
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    Call or visit us directly at{' '}
+                    <a href="tel:+919992963807" className="text-cyan-400 font-bold hover:underline">
+                      +91 99929 63807
+                    </a>{' '}
+                    for member enrollments and consultations.
+                  </p>
+                </div>
+              </motion.div>
+
             </div>
 
             {/* Quick Next Step Action */}

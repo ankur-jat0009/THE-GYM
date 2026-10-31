@@ -1,8 +1,9 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { Navbar } from '../../components/common/Navbar';
 import { Footer } from '../../components/common/Footer';
 import { MembershipGrid } from '../../components/website/MembershipGrid';
-import { CreditCard, ShieldCheck, CheckCircle2, QrCode, PhoneCall, Sparkles, UserCheck, ArrowRight } from 'lucide-react';
+import { CreditCard, ShieldCheck, CheckCircle2, QrCode, PhoneCall, Sparkles, UserCheck, ArrowRight, Dumbbell } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export const MembershipPlansPage: React.FC = () => {
@@ -89,45 +90,71 @@ export const MembershipPlansPage: React.FC = () => {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="p-4 rounded-xl bg-gym-card border border-gym-border hover:border-gym-lime/40 transition-colors">
-                    <div className="w-9 h-9 rounded-lg bg-gym-lime/10 text-gym-lime flex items-center justify-center shrink-0 border border-gym-lime/30 mb-3">
-                      <QrCode className="w-4 h-4" />
+                  
+                  {/* Benefit 1: Lime */}
+                  <motion.div
+                    whileHover={{ y: -5, scale: 1.02 }}
+                    transition={{ duration: 0.2 }}
+                    className="p-5 rounded-2xl bg-gradient-to-br from-emerald-950/40 via-gym-card to-neutral-950 border border-emerald-500/40 hover:border-gym-lime shadow-lg hover:shadow-[0_0_20px_rgba(204,255,0,0.2)] transition-all group"
+                  >
+                    <div className="w-10 h-10 rounded-xl bg-gym-lime/15 text-gym-lime flex items-center justify-center shrink-0 border border-gym-lime/40 mb-3 shadow-glow-lime-sm group-hover:scale-110 transition-transform">
+                      <QrCode className="w-5 h-5" />
                     </div>
-                    <h4 className="font-heading font-bold text-white text-sm">Smart QR Attendance</h4>
-                    <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+                    <span className="text-[10px] font-extrabold uppercase tracking-wider text-gym-lime">Mobile Entry</span>
+                    <h4 className="font-heading font-black text-white text-base mt-0.5">Smart QR Attendance</h4>
+                    <p className="text-xs text-slate-300 mt-1.5 leading-relaxed">
                       Instant mobile QR check-ins and monthly attendance logging right on your phone.
                     </p>
-                  </div>
+                  </motion.div>
 
-                  <div className="p-4 rounded-xl bg-gym-card border border-gym-border hover:border-cyan-400/40 transition-colors">
-                    <div className="w-9 h-9 rounded-lg bg-cyan-500/10 text-cyan-400 flex items-center justify-center shrink-0 border border-cyan-500/30 mb-3">
-                      <ShieldCheck className="w-4 h-4" />
+                  {/* Benefit 2: Cyan */}
+                  <motion.div
+                    whileHover={{ y: -5, scale: 1.02 }}
+                    transition={{ duration: 0.2 }}
+                    className="p-5 rounded-2xl bg-gradient-to-br from-cyan-950/40 via-gym-card to-neutral-950 border border-cyan-500/40 hover:border-cyan-400 shadow-lg hover:shadow-[0_0_20px_rgba(6,182,212,0.2)] transition-all group"
+                  >
+                    <div className="w-10 h-10 rounded-xl bg-cyan-500/15 text-cyan-400 flex items-center justify-center shrink-0 border border-cyan-500/40 mb-3 shadow-[0_0_15px_rgba(6,182,212,0.3)] group-hover:scale-110 transition-transform">
+                      <ShieldCheck className="w-5 h-5" />
                     </div>
-                    <h4 className="font-heading font-bold text-white text-sm">Official Digital Receipts</h4>
-                    <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+                    <span className="text-[10px] font-extrabold uppercase tracking-wider text-cyan-400">Computerized</span>
+                    <h4 className="font-heading font-black text-white text-base mt-0.5">Official Digital Receipts</h4>
+                    <p className="text-xs text-slate-300 mt-1.5 leading-relaxed">
                       Download official payment receipts with receipt number directly from your dashboard.
                     </p>
-                  </div>
+                  </motion.div>
 
-                  <div className="p-4 rounded-xl bg-gym-card border border-gym-border hover:border-purple-400/40 transition-colors">
-                    <div className="w-9 h-9 rounded-lg bg-purple-500/10 text-purple-400 flex items-center justify-center shrink-0 border border-purple-500/30 mb-3">
-                      <CheckCircle2 className="w-4 h-4" />
+                  {/* Benefit 3: Purple */}
+                  <motion.div
+                    whileHover={{ y: -5, scale: 1.02 }}
+                    transition={{ duration: 0.2 }}
+                    className="p-5 rounded-2xl bg-gradient-to-br from-purple-950/40 via-gym-card to-neutral-950 border border-purple-500/40 hover:border-purple-400 shadow-lg hover:shadow-[0_0_20px_rgba(168,85,247,0.2)] transition-all group"
+                  >
+                    <div className="w-10 h-10 rounded-xl bg-purple-500/15 text-purple-400 flex items-center justify-center shrink-0 border border-purple-500/40 mb-3 shadow-[0_0_15px_rgba(168,85,247,0.3)] group-hover:scale-110 transition-transform">
+                      <Dumbbell className="w-5 h-5" />
                     </div>
-                    <h4 className="font-heading font-bold text-white text-sm">Free Weights & Machines</h4>
-                    <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+                    <span className="text-[10px] font-extrabold uppercase tracking-wider text-purple-400">Gym Equipment</span>
+                    <h4 className="font-heading font-black text-white text-base mt-0.5">Free Weights & Machines</h4>
+                    <p className="text-xs text-slate-300 mt-1.5 leading-relaxed">
                       Complete access to low-bar squat racks, benches, dumbbells, cables, and cardio.
                     </p>
-                  </div>
+                  </motion.div>
 
-                  <div className="p-4 rounded-xl bg-gym-card border border-gym-border hover:border-amber-400/40 transition-colors">
-                    <div className="w-9 h-9 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center shrink-0 border border-amber-500/30 mb-3">
-                      <UserCheck className="w-4 h-4" />
+                  {/* Benefit 4: Amber */}
+                  <motion.div
+                    whileHover={{ y: -5, scale: 1.02 }}
+                    transition={{ duration: 0.2 }}
+                    className="p-5 rounded-2xl bg-gradient-to-br from-amber-950/40 via-gym-card to-neutral-950 border border-amber-500/40 hover:border-amber-400 shadow-lg hover:shadow-[0_0_20px_rgba(245,158,11,0.2)] transition-all group"
+                  >
+                    <div className="w-10 h-10 rounded-xl bg-amber-500/15 text-amber-400 flex items-center justify-center shrink-0 border border-amber-500/40 mb-3 shadow-[0_0_15px_rgba(245,158,11,0.3)] group-hover:scale-110 transition-transform">
+                      <UserCheck className="w-5 h-5" />
                     </div>
-                    <h4 className="font-heading font-bold text-white text-sm">Supportive Culture</h4>
-                    <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+                    <span className="text-[10px] font-extrabold uppercase tracking-wider text-amber-400">Community</span>
+                    <h4 className="font-heading font-black text-white text-base mt-0.5">Supportive Culture</h4>
+                    <p className="text-xs text-slate-300 mt-1.5 leading-relaxed">
                       Encouraging workout space for everyday people, beginners, and serious lifters alike.
                     </p>
-                  </div>
+                  </motion.div>
+
                 </div>
 
                 {/* Call Front Desk */}

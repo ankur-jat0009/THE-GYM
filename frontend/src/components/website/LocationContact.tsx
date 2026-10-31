@@ -113,17 +113,26 @@ export const LocationContact: React.FC = () => {
           </div>
 
           {/* Interactive Map Embed */}
-          <div className="lg:col-span-7 rounded-2xl bg-gym-card border border-gym-border overflow-hidden shadow-xl min-h-[380px] relative">
+          <div className="lg:col-span-7 rounded-2xl bg-gym-card border border-gym-border overflow-hidden shadow-2xl min-h-[420px] relative group">
+            {/* Live colorful pin indicator badge */}
+            <div className="absolute top-4 left-4 z-10 flex items-center gap-2.5 bg-black/90 backdrop-blur-md px-4 py-2 rounded-xl border border-red-500/50 text-xs font-bold text-white shadow-2xl">
+              <span className="relative flex h-3 w-3">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+              </span>
+              <span>THE GYM Location Pin</span>
+            </div>
+
             <iframe
               title="THE GYM Location Google Map"
-              src={`https://maps.google.com/maps?q=${encodeURIComponent("THE GYM Near Ekta Hospital Badshahpur Sector 69 Gurugram")}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
+              src={`https://maps.google.com/maps?q=28.3854,77.0505+(THE%20GYM%20Badshahpur%20Sector%2069)&t=&z=16&ie=UTF8&iwloc=B&output=embed`}
               width="100%"
               height="100%"
-              style={{ border: 0, minHeight: '380px' }}
+              style={{ border: 0, minHeight: '420px' }}
               allowFullScreen={true}
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              className="w-full h-full grayscale contrast-125 opacity-90 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+              className="w-full h-full min-h-[420px] rounded-2xl"
             />
           </div>
 
